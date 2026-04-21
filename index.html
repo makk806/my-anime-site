@@ -4,260 +4,109 @@
     <meta charset="UTF-8">
     <title>AnimeHub — Твой прогресс</title>
     <style>
-        :root {
-            --accent: #2ecc71;
-            --watched: #3498db;
-            --bg-dark: #0f1113;
-            --panel-bg: #1c2023;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: #c0c8cf;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 1000px;
-            background: rgba(28, 32, 35, 0.98);
-            min-height: 100vh;
-            border-left: 1px solid #333;
-            border-right: 1px solid #333;
-        }
-
-        header {
-            padding: 20px 40px;
-            background: #161a1d;
-            border-bottom: 3px solid var(--accent);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo { font-size: 24px; font-weight: bold; color: #fff; cursor: pointer; text-decoration: none; }
+        :root { --accent: #2ecc71; --watched: #3498db; --bg-dark: #0f1113; }
+        body { background-color: var(--bg-dark); color: #c0c8cf; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; }
+        .container { width: 1000px; background: rgba(28, 32, 35, 0.98); min-height: 100vh; border: 1px solid #333; }
+        header { padding: 20px 40px; background: #161a1d; border-bottom: 3px solid var(--accent); display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; color: #fff; cursor: pointer; }
         .logo span { color: var(--accent); }
-
-        .main-layout { display: flex; padding: 20px; gap: 20px; }
-        .content { flex: 3; }
-
-        .video-box {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 12px;
-            border: 2px solid #333;
-            overflow: hidden;
-            margin-bottom: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
+        .main-layout { padding: 20px; }
+        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; border: 2px solid #333; overflow: hidden; margin-bottom: 20px; }
         iframe { width: 100%; height: 100%; border: none; }
-
-        .season-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #333;
-        }
-        .season-tab {
-            background: #25292e;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 20px;
-            font-size: 13px;
-            transition: 0.3s;
-        }
-        .season-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
-
-        .ep-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .ep-btn {
-            background: #25292e;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 12px;
-            text-align: center;
-        }
+        .season-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .season-tab { background: #25292e; border: 1px solid #444; color: #fff; padding: 8px 16px; cursor: pointer; border-radius: 20px; font-size: 13px; }
+        .season-tab.active { background: var(--accent); color: #000; }
+        .ep-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; }
+        .ep-btn { background: #25292e; border: 1px solid #444; color: #fff; padding: 10px; cursor: pointer; border-radius: 6px; text-align: center; }
         .ep-btn.active { background: var(--accent) !important; color: #000; }
         .ep-btn.watched { border-bottom: 3px solid var(--watched); }
-
         .anime-list { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { 
-            background: #161a1d; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            border: 1px solid #333;
-            overflow: hidden;
-            transition: 0.3s;
-        }
+        .card { background: #161a1d; border-radius: 10px; cursor: pointer; border: 1px solid #333; overflow: hidden; transition: 0.3s; }
         .card img { width: 100%; height: 280px; object-fit: cover; }
         .card-info { padding: 15px; text-align: center; font-weight: bold; }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
-
-        .back-btn {
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 8px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
+        .back-btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 8px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <header>
         <div class="logo" onclick="location.reload()">ANIME<span>HUB</span></div>
-        <div id="user-level" style="font-size: 14px; color: var(--accent); font-weight: bold;">Твой уровень: 0 XP</div>
+        <div id="user-level" style="font-size: 14px; color: var(--accent); font-weight: bold;">Уровень: 0 XP</div>
     </header>
-
     <div class="main-layout">
-        <div class="content">
-            <div id="home-screen">
-                <h2 style="margin-top: 0;">🔥 РЕКОМЕНДАЦИИ</h2>
-                <div class="anime-list" id="list"></div>
-            </div>
-
-            <div id="player-screen" style="display:none;">
-                <button class="back-btn" onclick="location.reload()">← НАЗАД</button>
-                <h2 id="anime-title" style="color: #fff;">Название</h2>
-                
-                <div class="video-box">
-                    <iframe id="v-iframe" allowfullscreen></iframe>
-                </div>
-
-                <div id="season-tabs" class="season-tabs"></div>
-                <h3>Выбор серии:</h3>
-                <div class="ep-grid" id="ep-list"></div>
-            </div>
+        <div id="home-screen">
+            <div class="anime-list" id="list"></div>
+        </div>
+        <div id="player-screen" style="display:none;">
+            <button class="back-btn" onclick="location.reload()">← НАЗАД</button>
+            <h2 id="anime-title" style="color: #fff;"></h2>
+            <div class="video-box"><iframe id="v-iframe" allowfullscreen></iframe></div>
+            <div id="season-tabs" class="season-tabs"></div>
+            <div class="ep-grid" id="ep-list"></div>
         </div>
     </div>
 </div>
 
 <script>
     const data = [
-        {
-            id: "krd",
-            name: "Клинок рассекающий демонов",
-            shikiId: "38000",
-            img: "https://shikimori.one/system/animes/original/38000.jpg",
-            seasons: [
-                { title: "Сезон 1", id: "38000", eps: 26 },
-                { title: "Поезд", id: "49926", eps: 7 },
-                { title: "Квартал", id: "47778", eps: 11 },
-                { title: "Деревня", id: "51019", eps: 11 }
-            ]
-        },
-        {
-            id: "onepiece",
-            name: "Ван Пис",
-            shikiId: "21",
-            img: "https://shikimori.one/system/animes/original/21.jpg",
-            seasons: [{ title: "Весь сериал", id: "21", eps: 1115 }]
-        },
-        {
-            id: "titans",
-            name: "Атака Титанов",
-            shikiId: "16498",
-            img: "https://shikimori.one/system/animes/original/16498.jpg",
-            seasons: [
-                { title: "Сезон 1", id: "16498", eps: 25 },
-                { title: "Сезон 2", id: "33255", eps: 12 },
-                { title: "Сезон 3", id: "35760", eps: 12 },
-                { title: "Сезон 3 ч.2", id: "38524", eps: 10 },
-                { title: "Финал", id: "40028", eps: 16 }
-            ]
-        },
-        {
-            id: "magic",
-            name: "Магическая Битва",
-            shikiId: "40748",
-            img: "https://shikimori.one/system/animes/original/40748.jpg",
-            seasons: [
-                { title: "Сезон 1", id: "40748", eps: 24 },
-                { title: "Сезон 2", id: "51009", eps: 23 }
-            ]
-        }
+        { id: "krd", name: "Клинок рассекающий демонов", seasons: [
+            { title: "Сезон 1", id: "38000", eps: 26 }, { title: "Поезд", id: "49926", eps: 7 }, { title: "Квартал", id: "47778", eps: 11 }, { title: "Деревня", id: "51019", eps: 11 }
+        ], img: "https://shikimori.one/system/animes/original/38000.jpg" },
+        { id: "titans", name: "Атака Титанов", seasons: [
+            { title: "Сезон 1", id: "16498", eps: 25 }, { title: "Сезон 2", id: "33255", eps: 12 }, { title: "Сезон 3", id: "35760", eps: 12 }, { title: "Сезон 3 ч.2", id: "38524", eps: 10 }, { title: "Финал", id: "40028", eps: 16 }
+        ], img: "https://shikimori.one/system/animes/original/16498.jpg" },
+        { id: "onepiece", name: "Ван Пис", seasons: [{ title: "Весь сериал", id: "21", eps: 1115 }], img: "https://shikimori.one/system/animes/original/21.jpg" },
+        { id: "magic", name: "Магическая Битва", seasons: [
+            { title: "Сезон 1", id: "40748", eps: 24 }, { title: "Сезон 2", id: "51009", eps: 23 }
+        ], img: "https://shikimori.one/system/animes/original/40748.jpg" }
     ];
 
     const listDiv = document.getElementById('list');
     data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `
-            <img src="${item.img}" onerror="this.src='https://moe.shikimori.one/system/animes/original/${item.shikiId}.jpg'">
-            <div class="card-info">${item.name}</div>
-        `;
-        card.onclick = () => openPlayer(item);
+        card.innerHTML = `<img src="${item.img}"><div class="card-info">${item.name}</div>`;
+        card.onclick = () => {
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('player-screen').style.display = 'block';
+            document.getElementById('anime-title').innerText = item.name;
+            const tabs = document.getElementById('season-tabs');
+            tabs.innerHTML = '';
+            item.seasons.forEach((s, idx) => {
+                const tab = document.createElement('div');
+                tab.className = 'season-tab' + (idx === 0 ? ' active' : '');
+                tab.innerText = s.title;
+                tab.onclick = () => {
+                    document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    loadSeason(item.id, s);
+                };
+                tabs.appendChild(tab);
+            });
+            loadSeason(item.id, item.seasons[0]);
+        };
         listDiv.appendChild(card);
     });
 
-    function openPlayer(anime) {
-        document.getElementById('home-screen').style.display = 'none';
-        document.getElementById('player-screen').style.display = 'block';
-        document.getElementById('anime-title').innerText = anime.name;
-        
-        const tabsDiv = document.getElementById('season-tabs');
-        tabsDiv.innerHTML = '';
-        
-        anime.seasons.forEach((s, idx) => {
-            const tab = document.createElement('div');
-            tab.className = 'season-tab' + (idx === 0 ? ' active' : '');
-            tab.innerText = s.title;
-            tab.onclick = () => {
-                document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                loadSeason(anime.id, s);
-            };
-            tabsDiv.appendChild(tab);
-        });
-        loadSeason(anime.id, anime.seasons[0]);
-    }
-
     function loadSeason(animeId, season) {
-        const epDiv = document.getElementById('ep-list');
-        const iframe = document.getElementById('v-iframe');
-        const storageKey = `progress_${animeId}_${season.id}`;
-        let watched = JSON.parse(localStorage.getItem(storageKey)) || [];
-
-        // ИСПОЛЬЗУЕМ СТАБИЛЬНЫЙ ПЛЕЕР KODIK (работает на GitHub)
-        iframe.src = `https://puny-sturgeon.static.domains/player.html?id=${season.id}&ep=1`;
-
-        epDiv.innerHTML = '';
+        const grid = document.getElementById('ep-list');
+        const ifr = document.getElementById('v-iframe');
+        const key = `progress_${animeId}_${season.id}`;
+        let watched = JSON.parse(localStorage.getItem(key)) || [];
+        ifr.src = `https://2642236528.vibe-api.cc/anime/${season.id}?episode=1`;
+        grid.innerHTML = '';
         for(let i = 1; i <= season.eps; i++) {
-            const btn = document.createElement('div');
-            btn.className = 'ep-btn';
-            if(watched.includes(i)) btn.classList.add('watched');
-            btn.innerText = i;
-            
-            btn.onclick = () => {
-                iframe.src = `https://puny-sturgeon.static.domains/player.html?id=${season.id}&ep=${i}`;
-                if(!watched.includes(i)) {
-                    watched.push(i);
-                    localStorage.setItem(storageKey, JSON.stringify(watched));
-                }
-                document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                btn.classList.add('watched');
+            const b = document.createElement('div');
+            b.className = 'ep-btn' + (watched.includes(i) ? ' watched' : '');
+            b.innerText = i;
+            b.onclick = () => {
+                ifr.src = `https://2642236528.vibe-api.cc/anime/${season.id}?episode=${i}`;
+                if(!watched.includes(i)) { watched.push(i); localStorage.setItem(key, JSON.stringify(watched)); }
+                document.querySelectorAll('.ep-btn').forEach(x => x.classList.remove('active'));
+                b.classList.add('active', 'watched');
                 updateXP();
             };
-            epDiv.appendChild(btn);
+            grid.appendChild(b);
         }
         updateXP();
     }
@@ -265,15 +114,12 @@
     function updateXP() {
         let total = 0;
         for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key.startsWith('progress_')) {
-                total += JSON.parse(localStorage.getItem(key)).length;
-            }
+            const k = localStorage.key(i);
+            if (k.startsWith('progress_')) total += JSON.parse(localStorage.getItem(k)).length;
         }
-        document.getElementById('user-level').innerText = `Твой уровень: ${total} XP`;
+        document.getElementById('user-level').innerText = `Уровень: ${total} XP`;
     }
     updateXP();
 </script>
-
 </body>
 </html>
