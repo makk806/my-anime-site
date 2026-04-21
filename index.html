@@ -124,7 +124,7 @@
 <div class="container">
     <header>
         <div class="logo" onclick="location.reload()">ANIME<span>HUB</span></div>
-        <div style="font-size: 12px; color: var(--accent);">Уровень: Мастер прогресса</div>
+        <div id="user-level" style="font-size: 14px; color: var(--accent); font-weight: bold;">Твой уровень: 0 XP</div>
     </header>
 
     <div class="main-layout">
@@ -176,7 +176,13 @@
             name: "Атака Титанов",
             shikiId: "16498",
             img: "https://shikimori.one/system/animes/original/16498.jpg",
-            seasons: [{ title: "Сезон 1", id: "16498", eps: 25 }]
+            seasons: [
+                { title: "Сезон 1", id: "16498", eps: 25 },
+                { title: "Сезон 2", id: "33255", eps: 12 },
+                { title: "Сезон 3", id: "35760", eps: 12 },
+                { title: "Сезон 3 ч.2", id: "38524", eps: 10 },
+                { title: "Финал", id: "40028", eps: 16 }
+            ]
         },
         {
             id: "magic",
@@ -227,12 +233,11 @@
     function loadSeason(animeId, season) {
         const epDiv = document.getElementById('ep-list');
         const iframe = document.getElementById('v-iframe');
-        const storageKey = `watched_${animeId}_${season.id}`;
+        const storageKey = `progress_${animeId}_${season.id}`;
         let watched = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-        // Используем самый стабильный домен на текущий момент (Alloha/Aka)
-        const baseUrl = "https://api.alloha.tv/?shikimori_id=";
-        iframe.src = `${baseUrl}${season.id}&episode=1`;
+        // Стабильный плеер Pletora (работает на GitHub)
+        iframe.src = `https://pletora.art/anime/${season.id}?ep=1`;
 
         epDiv.innerHTML = '';
         for(let i = 1; i <= season.eps; i++) {
@@ -242,7 +247,7 @@
             btn.innerText = i;
             
             btn.onclick = () => {
-                iframe.src = `${baseUrl}${season.id}&episode=${i}`;
+                iframe.src = `https://pletora.art/anime/${season.id}?ep=${i}`;
                 if(!watched.includes(i)) {
                     watched.push(i);
                     localStorage.setItem(storageKey, JSON.stringify(watched));
@@ -250,10 +255,24 @@
                 document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 btn.classList.add('watched');
+                updateXP();
             };
             epDiv.appendChild(btn);
         }
+        updateXP();
     }
+
+    function updateXP() {
+        let total = 0;
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith('progress_')) {
+                total += JSON.parse(localStorage.getItem(key)).length;
+            }
+        }
+        document.getElementById('user-level').innerText = `Твой уровень: ${total} XP`;
+    }
+    updateXP();
 </script>
 
 </body>
