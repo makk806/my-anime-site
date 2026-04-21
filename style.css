@@ -1,0 +1,66 @@
+/* Обновляем цвета и эффекты */
+:root {
+    --bg-dark: #0f1113;
+    --accent: #2ecc71; /* Сочный зеленый для меню */
+}
+
+body { background-color: var(--bg-dark); }
+
+.content-center {
+    background: linear-gradient(180deg, #16191c 0%, #0f1113 100%);
+    border: none;
+    box-shadow: 0 0 30px rgba(0,255,100,0.05); /* Легкое зеленое свечение */
+}
+
+/* Красивая подсветка названия */
+.highlight {
+    color: #ff4757;
+    text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+}
+
+/* Закругленная картинка аниме */
+.anime-poster {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Круглая */
+    object-fit: cover;
+    border: 3px solid var(--theme-color);
+    box-shadow: 0 0 15px var(--theme-color);
+    float: left;
+    margin-right: 20px;
+}
+
+/* Оживляем кнопки навигации */
+.nav-block li {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.nav-block li:hover {
+    padding-left: 20px;
+    border-left: 3px solid var(--accent);
+    background: rgba(46, 204, 113, 0.1);
+    color: #fff;
+}
+
+.nav-block li.active {
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    background: rgba(46, 204, 113, 0.05);
+}
+
+/* Стилизация плеера */
+.player-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
+.info-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    padding: 15px;
+    border-radius: 10px;
+}
