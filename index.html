@@ -236,8 +236,8 @@
         const storageKey = `progress_${animeId}_${season.id}`;
         let watched = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-        // Стабильный плеер Pletora (работает на GitHub)
-        iframe.src = `https://pletora.art/anime/${season.id}?ep=1`;
+        // ИСПОЛЬЗУЕМ СТАБИЛЬНЫЙ ПЛЕЕР KODIK (работает на GitHub)
+        iframe.src = `https://puny-sturgeon.static.domains/player.html?id=${season.id}&ep=1`;
 
         epDiv.innerHTML = '';
         for(let i = 1; i <= season.eps; i++) {
@@ -247,7 +247,7 @@
             btn.innerText = i;
             
             btn.onclick = () => {
-                iframe.src = `https://pletora.art/anime/${season.id}?ep=${i}`;
+                iframe.src = `https://puny-sturgeon.static.domains/player.html?id=${season.id}&ep=${i}`;
                 if(!watched.includes(i)) {
                     watched.push(i);
                     localStorage.setItem(storageKey, JSON.stringify(watched));
